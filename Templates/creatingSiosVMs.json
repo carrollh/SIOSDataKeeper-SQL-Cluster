@@ -71,9 +71,9 @@
       "name": "[concat(variables('siosVMNamePrefix'), '0')]",
       "location": "[parameters('location')]",
       "plan": {
-        "name": "bring_your_own_license",
-        "publisher": "sios_datakeeper",
-        "product": "sios-datakeeper-8"
+        "name": "2.127.20190521",
+        "publisher": "MicrosoftWindowsServer",
+        "product": "WindowsServer"
       },
       "properties": {
         "hardwareProfile": {
@@ -89,9 +89,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "sios_datakeeper",
-            "offer": "sios-datakeeper-8",
-            "sku": "bring_your_own_license",
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2008-R2-SP1",
             "version": "latest"
           },
           "osDisk": {
@@ -154,7 +154,8 @@
             },
             "licenseKeyFtpURL": "[parameters('licenseKeyFtpURL')]",
             "clusterName": "[parameters('clusterName')]",
-            "sharePath": "[toLower(concat(variables('sharePathPrefix'), parameters('sharePath')))]"
+            "sharePath": "[toLower(concat(variables('sharePathPrefix'), parameters('sharePath')))]",
+            "nodes": [ "[concat(variables('siosVMNamePrefix'),'0')]", "[concat(variables('siosVMNamePrefix'),'1')]" ]
           }
         },
         "protectedSettings": {
@@ -170,9 +171,9 @@
       "name": "[concat(variables('siosVMNamePrefix'), '1')]",
       "location": "[parameters('location')]",
       "plan": {
-        "name": "bring_your_own_license",
-        "publisher": "sios_datakeeper",
-        "product": "sios-datakeeper-8"
+        "name": "2.127.20190521",
+        "publisher": "MicrosoftWindowsServer",
+        "product": "WindowsServer"
       },
       "properties": {
         "hardwareProfile": {
@@ -188,9 +189,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "sios_datakeeper",
-            "offer": "sios-datakeeper-8",
-            "sku": "bring_your_own_license",
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2008-R2-SP1",
             "version": "latest"
           },
           "osDisk": {
@@ -251,94 +252,7 @@
               "userName": "[parameters('adminUserName')]",
               "password": "PrivateSettingsRef:adminPassword"
             },
-            "licenseKeyFtpURL": "[parameters('licenseKeyFtpURL')]",
-            "clusterName": "[parameters('clusterName')]",
-            "nodes": [ "[concat(variables('siosVMNamePrefix'),'0')]", "[concat(variables('siosVMNamePrefix'),'1')]" ]
-          }
-        },
-        "protectedSettings": {
-          "items": {
-            "adminPassword": "[parameters('adminPassword')]"
-          }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('siosVMNamePrefix'), 'client')]",
-      "location": "[parameters('location')]",
-      "plan": {
-        "name": "bring_your_own_license",
-        "publisher": "sios_datakeeper",
-        "product": "sios-datakeeper-8"
-      },
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('siosVMSize')]"
-        },
-        "availabilitySet": {
-          "id": "[parameters('clientAvailabilitySet')]"
-        },
-        "osProfile": {
-          "computerName": "[concat(variables('siosVMNamePrefix'),'client')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "sios_datakeeper",
-            "offer": "sios-datakeeper-8",
-            "sku": "bring_your_own_license",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'clnt.blob.core.windows.net/',parameters('vmContainerName'),'/client', '-osdisk.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          },
-          "dataDisks": [ ]
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId(resourceGroup().name,'Microsoft.Network/networkInterfaces','sios-client-nic')]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": "true",
-            "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('siosVMNamePrefix'), 'client', '/configureSiosVM')]",
-      "apiVersion": "2015-06-15",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('siosVMNamePrefix'), 'client')]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Powershell",
-        "type": "DSC",
-        "typeHandlerVersion": "2.6",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "modulesURL": "[parameters('prepareClientVMModuleURL')]",
-          "configurationFunction": "[parameters('prepareClientVMCommandStr')]",
-          "properties": {
-            "domainName": "[parameters('domainName')]",
-            "adminCreds": {
-              "userName": "[parameters('adminUserName')]",
-              "password": "PrivateSettingsRef:adminPassword"
-            }
+            "licenseKeyFtpURL": "[parameters('licenseKeyFtpURL')]"
           }
         },
         "protectedSettings": {
