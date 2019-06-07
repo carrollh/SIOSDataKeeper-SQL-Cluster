@@ -83,19 +83,12 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2008-R2-SP1",
-            "version": "latest"
-          },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '0', '-osdisk.vhd')]"
-            },
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "imageReference": {
+              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest2/providers/Microsoft.Compute/images/SIOS-DK-864-2008"
+            }
           },
           "dataDisks": [
             {
@@ -178,19 +171,12 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2008-R2-SP1",
-            "version": "latest"
-          },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '1', '-osdisk.vhd')]"
-            },
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "imageReference": {
+              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest2/providers/Microsoft.Compute/images/SIOS-DK-864-2008"
+            }
           },
           "dataDisks": [
             {
