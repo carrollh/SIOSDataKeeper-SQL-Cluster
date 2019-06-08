@@ -492,12 +492,6 @@
           "newStorageAccountNamePrefix": {
             "value": "[parameters('newStorageAccountNamePrefix')]"
           },
-          "siosAvailabilitySet": {
-            "value": "[reference('CreatingAvailabilitySets').outputs.siosAvailabilitySet.value]"
-          },
-          "clientAvailabilitySet": {
-            "value": "[reference('CreatingAvailabilitySets').outputs.clientAvailabilitySet.value]"
-          },
           "siosVMSize": {
             "value": "[parameters('sQLVMSize')]"
           },
