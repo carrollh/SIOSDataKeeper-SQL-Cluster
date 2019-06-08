@@ -87,7 +87,7 @@
     },
     "sQLVMSize": {
       "type": "string",
-      "defaultValue": "Standard_DS1",
+      "defaultValue": "Standard_DS1_v2",
       "allowedValues": [
         "Standard_DS1_v2",
         "Standard_DS2_v2",
@@ -494,6 +494,10 @@
           },
           "siosVMSize": {
             "value": "[parameters('sQLVMSize')]"
+          },
+          "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "[variables('virtualNetworkName')]"
           },
           "domainName": {
             "value": "[parameters('domainName')]"
