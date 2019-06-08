@@ -495,10 +495,6 @@
           "siosVMSize": {
             "value": "[parameters('sQLVMSize')]"
           },
-          "virtualNetworkName": {
-            "type": "string",
-            "defaultValue": "[variables('virtualNetworkName')]"
-          },
           "domainName": {
             "value": "[parameters('domainName')]"
           },

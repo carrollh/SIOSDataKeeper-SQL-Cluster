@@ -20,7 +20,7 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "heathtest7VNET"
+      "defaultValue": "heathtest1VNET"
     },
     "domainName": {
       "type": "string",
