@@ -11,12 +11,6 @@
     "newStorageAccountNamePrefix": {
       "type": "string"
     },
-    "siosAvailabilitySet": {
-      "type": "string"
-    },
-    "clientAvailabilitySet": {
-      "type": "string"
-    },
     "siosVMSize": {
       "type": "string"
     },
@@ -74,18 +68,17 @@
         "hardwareProfile": {
           "vmSize": "[parameters('siosVMSize')]"
         },
-        "availabilitySet": {
-          "id": "[parameters('siosAvailabilitySet')]"
-        },
         "osProfile": {
           "computerName": "[concat(variables('siosVMNamePrefix'), '0')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "osDisk": {
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "osDisk": {
+              "createOption": "fromImage",
+              "managedDisk": {
+                  "storageAccountType": "[parameters('osDiskType')]"
+              }
           },
           "imageReference": {
               "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest2/providers/Microsoft.Compute/images/SIOS-DK-864-2008"
@@ -116,7 +109,10 @@
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
-      }
+      },
+      "zones": [
+          "1"
+      ]
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -154,7 +150,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-10-01",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('siosVMNamePrefix'), '1')]",
       "location": "[parameters('location')]",
@@ -162,18 +158,17 @@
         "hardwareProfile": {
           "vmSize": "[parameters('siosVMSize')]"
         },
-        "availabilitySet": {
-          "id": "[parameters('siosAvailabilitySet')]"
-        },
         "osProfile": {
           "computerName": "[concat(variables('siosVMNamePrefix'), '1')]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-          "osDisk": {
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "osDisk": {
+              "createOption": "fromImage",
+              "managedDisk": {
+                  "storageAccountType": "[parameters('osDiskType')]"
+              }
           },
           "imageReference": {
               "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest2/providers/Microsoft.Compute/images/SIOS-DK-864-2008"
@@ -204,12 +199,15 @@
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
-      }
+      },
+      "zones": [
+          "2"
+      ]
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('siosVMNamePrefix'), '1', '/configureSiosVM')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2018-10-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('siosVMNamePrefix'), '1')]"
