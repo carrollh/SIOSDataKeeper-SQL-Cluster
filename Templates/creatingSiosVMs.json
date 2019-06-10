@@ -12,7 +12,7 @@
     },
     "newStorageAccountNamePrefix": {
       "type": "string",
-      "defaultValue": "heathtest7"
+      "defaultValue": "heathtest2"
     },
     "siosVMSize": {
       "type": "string",
@@ -20,7 +20,7 @@
     },
     "virtualNetworkName": {
       "type": "string",
-      "defaultValue": "heathtest1VNET"
+      "defaultValue": "heathtest2VNET"
     },
     "domainName": {
       "type": "string",
@@ -44,11 +44,11 @@
     },
     "clusterName": {
       "type": "string",
-      "defaultValue": "heathtest7-fc"
+      "defaultValue": "heathtest2-fc"
     },
     "sharePath": {
       "type": "string",
-      "defaultValue": "heathtest7-fsw"
+      "defaultValue": "heathtest2-fsw"
     },
     "prepareDataKeeperHeadNodeModuleURL": {
       "type": "string",
