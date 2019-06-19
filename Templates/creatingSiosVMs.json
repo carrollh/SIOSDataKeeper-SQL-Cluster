@@ -105,13 +105,23 @@
       "properties": {
         "ipConfigurations": [
           {
-            "name": "ipconfig0",
+            "name": "ipconfig10",
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "10.0.0.10",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('siosVMNamePrefix'), '0-ip'))]"
               },
+              "subnet": {
+                "id": "[variables('subnet1Ref')]"
+              }
+            }
+          },
+          {
+            "name": "ipconfig100",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "10.0.0.100",
               "subnet": {
                 "id": "[variables('subnet1Ref')]"
               }
