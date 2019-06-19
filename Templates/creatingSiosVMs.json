@@ -117,16 +117,6 @@
                 "id": "[variables('subnet1Ref')]"
               }
             }
-          },
-          {
-            "name": "ipconfig100",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "10.0.0.100",
-              "subnet": {
-                "id": "[variables('subnet1Ref')]"
-              }
-            }
           }
         ]
       }
