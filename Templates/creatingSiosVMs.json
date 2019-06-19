@@ -107,6 +107,7 @@
           {
             "name": "ipconfig10",
             "properties": {
+              "primary": true,
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "10.0.0.10",
               "publicIPAddress": {
@@ -174,7 +175,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
@@ -300,7 +301,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
