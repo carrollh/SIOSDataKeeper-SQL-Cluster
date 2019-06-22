@@ -44,11 +44,11 @@
     },
     "clusterName": {
       "type": "string",
-      "defaultValue": "heathtest2-fc"
+      "defaultValue": "sios-fc"
     },
     "sharePath": {
       "type": "string",
-      "defaultValue": "heathtest2-fsw"
+      "defaultValue": "sios-fsw"
     },
     "prepareDataKeeperHeadNodeModuleURL": {
       "type": "string",
