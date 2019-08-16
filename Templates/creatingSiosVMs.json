@@ -87,23 +87,20 @@
               "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '0', '-osdisk.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "fromImage",
+            "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              }
+            }
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/', variables('siosVMNamePrefix'), '0', '-datadisk.vhd')]"
-              },
-              "name": "[concat(variables('siosVMNamePrefix'), '0','-datadisk')]",
-              "caching": "None",
-              "createOption": "empty",
-              "diskSizeGB": 100,
-              "lun": 0
+              "name": "[concat(parameters('customVmName'),'_DataDisk1')]",
+              "lun": 1,
+              "createOption": "FromImage",
+              "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              }
             }
           ]
         },
@@ -178,23 +175,20 @@
               "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '1', '-osdisk.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "fromImage",
+            "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              }
+            }
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/', variables('siosVMNamePrefix'), '1', '-datadisk.vhd')]"
-              },
-              "name": "[concat(variables('siosVMNamePrefix'), '1','-datadisk')]",
-              "caching": "None",
-              "createOption": "empty",
-              "diskSizeGB": 100,
-              "lun": 0
+              "name": "[concat(parameters('customVmName'),'_DataDisk1')]",
+              "lun": 1,
+              "createOption": "FromImage",
+              "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              }
             }
           ]
         },
