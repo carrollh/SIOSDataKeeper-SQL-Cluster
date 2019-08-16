@@ -3,135 +3,79 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "siosVMNamePrefix": {
-      "type": "string",
-      "defaultValue": "sios"
+      "type": "string"
     },
     "location": {
-      "type": "string",
-      "defaultValue": "East US 2"
+      "type": "string"
     },
     "newStorageAccountNamePrefix": {
-      "type": "string",
-      "defaultValue": "heathtest2"
+      "type": "string"
+    },
+    "siosAvailabilitySet": {
+      "type": "string"
+    },
+    "clientAvailabilitySet": {
+      "type": "string"
     },
     "siosVMSize": {
-      "type": "string",
-      "defaultValue": "Standard_DS1_v2"
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "heathtest2VNET"
+      "type": "string"
     },
     "domainName": {
-      "type": "string",
-      "defaultValue": "datakeeper.local"
+      "type": "string"
     },
     "adminUsername": {
-      "type": "string",
-      "defaultValue": "siosadmin"
+      "type": "string"
     },
     "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "SIOS!5105?sios"
+      "type": "securestring"
     },
     "vmContainerName": {
-      "type": "string",
-      "defaultValue": "vhds"
+      "type": "string"
     },
     "licenseKeyFtpURL": {
-      "type": "string",
-      "defaultValue": ""
+      "type": "string"
     },
     "clusterName": {
-      "type": "string",
-      "defaultValue": "sios-fc"
+      "type": "string"
     },
     "sharePath": {
-      "type": "string",
-      "defaultValue": "sios-fsw"
+      "type": "string"
     },
     "prepareDataKeeperHeadNodeModuleURL": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/carrollh/SIOSDataKeeper-SQL-Cluster/master/DSC/ConfigureSiosVM0.ps1.zip"
+      "type": "string"
     },
     "prepareDataKeeperHeadNodeCommandStr": {
-      "type": "string",
-      "defaultValue": "ConfigureSiosVM0.ps1\\ConfigureSiosVM0"
+      "type": "string"
     },
     "prepareDataKeeperNodesModuleURL": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/carrollh/SIOSDataKeeper-SQL-Cluster/master/DSC/ConfigureSiosVM.ps1.zip"
+      "type": "string"
     },
     "prepareDataKeeperNodesCommandStr": {
-      "type": "string",
-      "defaultValue": "ConfigureSiosVM.ps1\\ConfigureSiosVM"
+      "type": "string"
     },
     "prepareClientVMModuleURL": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/carrollh/SIOSDataKeeper-SQL-Cluster/master/DSC/ConfigureSiosClientVM.ps1.zip"
+      "type": "string"
     },
     "prepareClientVMCommandStr": {
-      "type": "string",
-      "defaultValue": "ConfigureSiosClientVM.ps1\\ConfigureSiosClientVM"
+      "type": "string"
     }
   },
   "variables": {
     "sharePathPrefix": "\\\\ad-pdc\\",
-    "siosVMNamePrefix": "[concat(parameters('siosVMNamePrefix'), '-')]",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/','staticSubnet')]"
+    "siosVMNamePrefix": "[concat(parameters('siosVMNamePrefix'), '-')]"
   },
   "resources": [
     {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('siosVMNamePrefix'), '0-ip')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
-      },
-      "zones": [
-        "1"
-      ]
-    },
-    {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('siosVMNamePrefix'), '0-nic')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('siosVMNamePrefix'), '0-ip')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig10",
-            "properties": {
-              "primary": true,
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "10.0.0.10",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('siosVMNamePrefix'), '0-ip'))]"
-              },
-              "subnet": {
-                "id": "[variables('subnet1Ref')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2018-10-01",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('siosVMNamePrefix'), '0')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('siosVMNamePrefix'), '0-nic')]"
-      ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('siosVMSize')]"
+        },
+        "availabilitySet": {
+          "id": "[parameters('siosAvailabilitySet')]"
         },
         "osProfile": {
           "computerName": "[concat(variables('siosVMNamePrefix'), '0')]",
@@ -139,17 +83,24 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-            "osDisk": {
-              "createOption": "fromImage",
-              "managedDisk": {
-                  "storageAccountType": "Premium_LRS"
-              }
-          },
           "imageReference": {
-              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest1/providers/Microsoft.Compute/images/SIOS-DK864-2008R2"
+              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '0', '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
+              "vhd": {
+                "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/', variables('siosVMNamePrefix'), '0', '-datadisk.vhd')]"
+              },
+              "name": "[concat(variables('siosVMNamePrefix'), '0','-datadisk')]",
+              "caching": "None",
               "createOption": "empty",
               "diskSizeGB": 100,
               "lun": 0
@@ -159,25 +110,22 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('siosVMNamePrefix'), '0-nic'))]"
+              "id": "[resourceId(resourceGroup().name,'Microsoft.Network/networkInterfaces',concat(variables('siosVMNamePrefix'), '0','-nic'))]"
             }
           ]
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": true,
+            "enabled": "true",
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
-      },
-      "zones": [
-          "1"
-      ]
+      }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('siosVMNamePrefix'), '0', '/configureSiosVM')]",
-      "apiVersion": "2018-10-01",
+      "apiVersion": "2015-06-15",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('siosVMNamePrefix'), '0')]"
@@ -198,8 +146,7 @@
             },
             "licenseKeyFtpURL": "[parameters('licenseKeyFtpURL')]",
             "clusterName": "[parameters('clusterName')]",
-            "sharePath": "[toLower(concat(variables('sharePathPrefix'), parameters('sharePath')))]",
-            "nodes": [ "[concat(variables('siosVMNamePrefix'),'0')]", "[concat(variables('siosVMNamePrefix'),'1')]" ]
+            "sharePath": "[toLower(concat(variables('sharePathPrefix'), parameters('sharePath')))]"
           }
         },
         "protectedSettings": {
@@ -210,54 +157,16 @@
       }
     },
     {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('siosVMNamePrefix'), '1-ip')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic"
-      },
-      "zones": [
-        "2"
-      ]
-    },
-    {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('siosVMNamePrefix'), '1-nic')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('siosVMNamePrefix'), '1-ip')]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "PrivateIPAddress": "10.0.0.20",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('siosVMNamePrefix'), '1-ip'))]"
-              },
-              "subnet": {
-                "id": "[variables('subnet1Ref')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2018-10-01",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(variables('siosVMNamePrefix'), '1')]",
       "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('siosVMNamePrefix'), '1-nic')]"
-      ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('siosVMSize')]"
+        },
+        "availabilitySet": {
+          "id": "[parameters('siosAvailabilitySet')]"
         },
         "osProfile": {
           "computerName": "[concat(variables('siosVMNamePrefix'), '1')]",
@@ -265,17 +174,24 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
-            "osDisk": {
-              "createOption": "fromImage",
-              "managedDisk": {
-                  "storageAccountType": "Premium_LRS"
-              }
-          },
           "imageReference": {
-              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/HeathTest1/providers/Microsoft.Compute/images/SIOS-DK864-2008R2"
+              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/',variables('siosVMNamePrefix'), '1', '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
+              "vhd": {
+                "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'1.blob.core.windows.net/',parameters('vmContainerName'),'/', variables('siosVMNamePrefix'), '1', '-datadisk.vhd')]"
+              },
+              "name": "[concat(variables('siosVMNamePrefix'), '1','-datadisk')]",
+              "caching": "None",
               "createOption": "empty",
               "diskSizeGB": 100,
               "lun": 0
@@ -285,25 +201,22 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('siosVMNamePrefix'), '1-nic'))]"
+              "id": "[resourceId(resourceGroup().name,'Microsoft.Network/networkInterfaces',concat(variables('siosVMNamePrefix'), '1','-nic'))]"
             }
           ]
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": true,
+            "enabled": "true",
             "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
           }
         }
-      },
-      "zones": [
-          "2"
-      ]
+      }
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('siosVMNamePrefix'), '1', '/configureSiosVM')]",
-      "apiVersion": "2018-10-01",
+      "apiVersion": "2015-06-15",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('siosVMNamePrefix'), '1')]"
@@ -323,7 +236,93 @@
               "password": "PrivateSettingsRef:adminPassword"
             },
             "licenseKeyFtpURL": "[parameters('licenseKeyFtpURL')]",
-            "clusterName": "[parameters('clusterName')]"
+            "clusterName": "[parameters('clusterName')]",
+            "nodes": [ "[concat(variables('siosVMNamePrefix'),'0')]", "[concat(variables('siosVMNamePrefix'),'1')]" ]
+          }
+        },
+        "protectedSettings": {
+          "items": {
+            "adminPassword": "[parameters('adminPassword')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[concat(variables('siosVMNamePrefix'), 'client')]",
+      "location": "[parameters('location')]",
+      "plan": {
+        "name": "bring_your_own_license",
+        "publisher": "sios_datakeeper",
+        "product": "sios-datakeeper-8"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('siosVMSize')]"
+        },
+        "availabilitySet": {
+          "id": "[parameters('clientAvailabilitySet')]"
+        },
+        "osProfile": {
+          "computerName": "[concat(variables('siosVMNamePrefix'),'client')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "sios_datakeeper",
+            "offer": "sios-datakeeper-8",
+            "sku": "bring_your_own_license",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'clnt.blob.core.windows.net/',parameters('vmContainerName'),'/client', '-osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [ ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId(resourceGroup().name,'Microsoft.Network/networkInterfaces','sios-client-nic')]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[concat('http://',parameters('newStorageAccountNamePrefix'),'diag.blob.core.windows.net')]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('siosVMNamePrefix'), 'client', '/configureSiosVM')]",
+      "apiVersion": "2015-06-15",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('siosVMNamePrefix'), 'client')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.6",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "modulesURL": "[parameters('prepareClientVMModuleURL')]",
+          "configurationFunction": "[parameters('prepareClientVMCommandStr')]",
+          "properties": {
+            "domainName": "[parameters('domainName')]",
+            "adminCreds": {
+              "userName": "[parameters('adminUserName')]",
+              "password": "PrivateSettingsRef:adminPassword"
+            }
           }
         },
         "protectedSettings": {
