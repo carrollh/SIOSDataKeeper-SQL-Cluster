@@ -94,7 +94,7 @@
           },
           "dataDisks": [
             {
-              "name": "[concat(parameters('customVmName'),'_DataDisk1')]",
+              "name": "[variables('siosVMNamePrefix'),'0','_DataDisk1')]",
               "lun": 1,
               "createOption": "FromImage",
               "managedDisk": {
@@ -181,7 +181,7 @@
           },
           "dataDisks": [
             {
-              "name": "[concat(parameters('customVmName'),'_DataDisk1')]",
+              "name": "[variables('siosVMNamePrefix'),'1','_DataDisk1')]",
               "lun": 1,
               "createOption": "FromImage",
               "managedDisk": {
