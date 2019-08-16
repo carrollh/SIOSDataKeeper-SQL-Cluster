@@ -84,13 +84,12 @@
         },
         "storageProfile": {
           "imageReference": {
-              "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
+            "id": "/subscriptions/1e3aa8ec-3026-406f-a296-fa022343afad/resourceGroups/SIOSDK865/providers/Microsoft.Compute/images/DKv865on2012R2BYOL"
           },
           "osDisk": {
             "createOption": "fromImage",
             "managedDisk": {
-                "storageAccountType": "Standard_LRS"
-              }
+              "storageAccountType": "Standard_LRS"
             }
           },
           "dataDisks": [
@@ -177,8 +176,7 @@
           "osDisk": {
             "createOption": "fromImage",
             "managedDisk": {
-                "storageAccountType": "Standard_LRS"
-              }
+              "storageAccountType": "Standard_LRS"
             }
           },
           "dataDisks": [
